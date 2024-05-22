@@ -1,15 +1,20 @@
-from utils.mv_to_new_dir import move_files
-from models.main_model import MainModel
-from utils.read_metadata import read_metadata_directory
+import argparse
 
-input_ims_path = "./ims"
-info_list, corrupt_list = read_metadata_directory(input_ims_path)
+from starter import Starter
 
-input_ims: MainModel = MainModel(
-    output_path="./new_ims",
-    info_list=info_list
-)
+parser = argparse.ArgumentParser()
 
-move_files(input_ims)
+parser.add_argument("-m", "--move", action="store_true")
+parser.add_argument("-c", "--copy", action="store_true")
 
-print(corrupt_list)
+parser.add_argument("-d", "--detect-video", action="store_true")
+
+parser.add_argument("-l", "--logs", action="store_true")
+
+parser.add_argument("exiftool_path")
+parser.add_argument("input_path")
+parser.add_argument("output_path")
+
+args = vars(parser.parse_args())
+
+Starter(**args)
