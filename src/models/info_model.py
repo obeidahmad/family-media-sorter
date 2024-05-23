@@ -1,8 +1,7 @@
 import os
 import datetime
 
-from pydantic import BaseModel, model_validator
-from typing_extensions import Self
+from pydantic import BaseModel
 
 
 class InfoModel(BaseModel):
@@ -12,12 +11,6 @@ class InfoModel(BaseModel):
     file_type: str
     camera_model_name: str
     og_date: datetime.datetime
-
-    @model_validator(mode='after')
-    def create_new_path(self) -> Self:
-        if self.abs_path.startswith("."):
-            self.abs_path = os.getcwd() + self.abs_path[1:]
-        return self
 
     @staticmethod
     def from_exiftool_dict(exiftool_dict) -> "InfoModel":

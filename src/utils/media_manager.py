@@ -1,61 +1,44 @@
-from enum import Enum
+import os
+import shutil
 
-from flatten_dict import unflatten
+from flatten_dict import flatten
 
-from models.info_model import InfoModel
-from models.input_model import ManagingMode
-
-
-class MediaManagingMode(str, Enum):
-    COPY = "copy"
-    MOVE = "move"
+from models.media_management_model import MediaManagementModel, MediaManagementMode
 
 
 class MediaManager:
-    def __init__(self, info_list: list[InfoModel], output_dir: str, mode: str):
-        self.info_list: list[InfoModel] = info_list
-        self.output_dir: str = output_dir
-        self.mode: ManagingMode = ManagingMode(mode)
+    def __init__(self, media_management_params: MediaManagementModel, path_mapping: dict, errored_files: list):
+        self.media_management_params: MediaManagementModel = media_management_params
+        self.path_mapping: dict = path_mapping
+        self.errored_files: list = errored_files
 
-    def create_new_path(self, info: InfoModel) -> str:
-        year = info.og_date.year
-        month = info.og_date.month
-        file_name = info.og_date.strftime('%Y.%m.%d_%H-%M-%S.%f')
+    def manage_file(self, old_path: str, new_path: str) -> str:
+        dir_name: str = os.path.dirname(new_path)
+        os.makedirs(dir_name, exist_ok=True)
 
-        return f"{self.output_dir}/{year}.{str(month).zfill(2)}/{info.camera_model_name}/{file_name}.{info.file_extension}"
+        if self.media_management_params.mode == MediaManagementMode.MOVE:
+            shutil.move(old_path, new_path)
+            if self.media_management_params.delete_empty_dir:
+                dir_to_delete: str = os.path.dirname(old_path)
+                while len(os.listdir(dir_to_delete)) == 0:
+                    os.rmdir(dir_to_delete)
+                    dir_to_delete = os.path.dirname(dir_to_delete)
+        else:
+            shutil.copy(old_path, new_path)
 
-    # def manage_file(self, info: InfoModel) -> str:
-    #     new_path: str = self.create_new_path(info)
-    #
-    #     if self.mode in [MediaManagingMode.MOVE, MediaManagingMode.COPY]:
-    #         dir_name: str = os.path.dirname(new_path)
-    #         os.makedirs(dir_name, exist_ok=True)
-    #
-    #         if self.mode == MediaManagingMode.MOVE:
-    #             shutil.move(info.abs_path, new_path)
-    #             if len(os.listdir(dir_name)) == 0:
-    #                 os.rmdir(dir_name)
-    #         else:
-    #             shutil.copy(info.abs_path, new_path)
-    #
-    #     return new_path
-    #
-    # def manage_files(self) -> dict:
-    #     pass
+        return new_path
 
-    def generate_management_dict(self) -> dict:
-        paths: dict = {}
-        for new_path, old_path in [(self.create_new_path(metadata), metadata.abs_path) for metadata in self.info_list]:
-            if new_path not in paths:
-                paths[new_path] = old_path
-            else:
-                counter = 0
-                while True:
-                    other_path = f"{new_path}_{counter}"
-                    if other_path in paths:
-                        counter += 1
-                    else:
-                        paths[other_path] = old_path
-                        break
+    def manage_files(self) -> None:
+        paths: dict = flatten(self.path_mapping, reducer="path")
 
-        return unflatten(paths, splitter='path')
+        for new_path, old_path in paths.items():
+            self.manage_file(old_path, new_path)
+
+        if self.media_management_params.delete_error_files:
+            for error_path in self.errored_files:
+                os.remove(error_path)
+                if self.media_management_params.delete_empty_dir:
+                    dir_to_delete: str = os.path.dirname(error_path)
+                    while len(os.listdir(dir_to_delete)) == 0:
+                        os.rmdir(dir_to_delete)
+                        dir_to_delete = os.path.dirname(dir_to_delete)
