@@ -8,6 +8,7 @@ from utils.media_manager import MediaManager
 from utils.metadata_reader import MetadataReader
 
 
+# Todo: Merge starter.py with main.py
 class Starter:
     def __init__(self, **kwargs):
         self.input: InputModel = InputModel(**kwargs)

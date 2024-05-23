@@ -13,6 +13,8 @@ class MetadataReader:
 
     def read_metadata(self, image_path: str) -> dict:
         metadata: dict = {}
+        # Todo: Replace with library PyExifTool
+        # Todo: Accelerate metadata extraction process
         process = subprocess.Popen([self.exiftool_path, image_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
 
         for tag in process.stdout:

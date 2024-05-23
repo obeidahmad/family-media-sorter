@@ -29,5 +29,6 @@ class InputModel(BaseModel):
                 # Todo: Make sure path is correct
                 pass
             else:
+                # Todo: Extract exiftool_path/command from env
                 print("exec file path cannot be null when in create mode!")
         return self

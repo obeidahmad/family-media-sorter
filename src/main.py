@@ -16,3 +16,5 @@ parser.add_argument("exec_file_path", default="./exec_file.json")
 args = vars(parser.parse_args())
 
 Starter(**args).start()
+
+# Todo: Transform into executable
