@@ -2,6 +2,7 @@ import os
 import shutil
 
 from flatten_dict import flatten
+from tqdm import tqdm
 
 from models.media_management_model import MediaManagementModel, MediaManagementMode
 
@@ -29,16 +30,22 @@ class MediaManager:
         return new_path
 
     def manage_files(self) -> None:
+        print("Reading paths ...")
         paths: dict = flatten(self.path_mapping, reducer="path")
+        print("Read Successfully.")
 
-        for new_path, old_path in paths.items():
+        print("Starting Management ...")
+        for new_path, old_path in tqdm(paths.items()):
             self.manage_file(old_path, new_path)
+        print("Management Finished.")
 
         if self.media_management_params.delete_error_files:
-            for error_path in self.errored_files:
+            print("Deleting Error files ...")
+            for error_path in tqdm(self.errored_files):
                 os.remove(error_path)
                 if self.media_management_params.delete_empty_dir:
                     dir_to_delete: str = os.path.dirname(error_path)
                     while len(os.listdir(dir_to_delete)) == 0:
                         os.rmdir(dir_to_delete)
                         dir_to_delete = os.path.dirname(dir_to_delete)
+            print("Deleted Error files.")

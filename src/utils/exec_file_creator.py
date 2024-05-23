@@ -1,4 +1,5 @@
 from flatten_dict import unflatten
+from tqdm import tqdm
 
 from models.info_model import InfoModel
 from models.media_management_model import MediaManagementModel
@@ -19,7 +20,7 @@ class ExecFileCreator:
 
     def generate_mapping_dict(self) -> dict:
         paths: dict = {}
-        for new_path, old_path in [(self.create_new_path(metadata), metadata.abs_path) for metadata in self.info_list]:
+        for new_path, old_path in tqdm([(self.create_new_path(metadata), metadata.abs_path) for metadata in self.info_list]):
             if new_path not in paths:
                 paths[new_path] = old_path
             else:
