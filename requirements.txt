@@ -1,1 +1,2 @@
 pydantic~=2.7.0
+flatten-dict~=0.4.2

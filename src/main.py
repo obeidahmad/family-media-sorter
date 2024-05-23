@@ -4,8 +4,7 @@ from starter import Starter
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-m", "--move", action="store_true")
-parser.add_argument("-c", "--copy", action="store_true")
+parser.add_argument("-m", "--mode", default="show")
 
 parser.add_argument("-d", "--detect-video", action="store_true")
 
@@ -17,4 +16,4 @@ parser.add_argument("output_path")
 
 args = vars(parser.parse_args())
 
-Starter(**args)
+Starter(**args).start()

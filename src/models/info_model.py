@@ -21,16 +21,25 @@ class InfoModel(BaseModel):
 
     @staticmethod
     def from_exiftool_dict(exiftool_dict) -> "InfoModel":
+        str_date = exiftool_dict["Create Date"].split("+")[0]
         try:
-            og_date = datetime.datetime.strptime(exiftool_dict["Date/Time Original"], "%Y:%m:%d %H:%M:%S.%f")
-        except:
-            og_date = datetime.datetime.strptime(exiftool_dict["Date/Time Original"], "%Y:%m:%d %H:%M:%S")
+            og_date = datetime.datetime.strptime(str_date, "%Y:%m:%d %H:%M:%S.%f")
+        except ValueError as e:
+            if "does not match format" in str(e):
+                og_date = datetime.datetime.strptime(str_date, "%Y:%m:%d %H:%M:%S")
+            else:
+                raise e
+
+        try:
+            camera_model_name = f"{exiftool_dict['Make'].replace(' ', '-')}_{exiftool_dict['Camera Model Name'].replace(' ', '-')}"
+        except KeyError:
+            camera_model_name = "unknown"
 
         return InfoModel(
             filename=exiftool_dict["File Name"],
             file_extension=exiftool_dict["File Type Extension"],
             abs_path=os.path.join(exiftool_dict["Directory"], exiftool_dict["File Name"]),
             file_type=exiftool_dict["MIME Type"].split("/")[0],
-            camera_model_name=f"{exiftool_dict['Make'].replace(' ', '-')}_{exiftool_dict['Camera Model Name'].replace(' ', '-')}",
+            camera_model_name=camera_model_name,
             og_date=og_date,
         )
