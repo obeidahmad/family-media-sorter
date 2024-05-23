@@ -1,29 +1,33 @@
-import os
+from enum import Enum
 
 from pydantic import BaseModel, model_validator
 from typing_extensions import Self
 
-from utils.media_manager import ManagingMode
+
+class ManagingMode(str, Enum):
+    EXECUTE = "execute"
+    CREATE = "create"
 
 
 class InputModel(BaseModel):
-    input_path: str
-    output_path: str
-    exiftool_path: str
+    input_path: str | None = None
+    output_path: str | None = None
+    exiftool_path: str | None = None
+    exec_file_path: str = "./exec_file.json"
     mode: ManagingMode
-    detect_video: bool
-    logs: bool
 
     @model_validator(mode='after')
-    def create_new_path(self) -> Self:
-        self.output_path = os.path.abspath(self.output_path)
-        self.input_path = os.path.abspath(self.input_path)
-        # Todo: handle input path does not exist
-        if not os.path.isdir(self.input_path):
-            pass
-
-        # Todo: handle exiftool_path is Null
-        if self.exiftool_path is None:
-            pass
-
+    def validate(self) -> Self:
+        if self.mode == ManagingMode.CREATE:
+            if not [x for x in (self.input_path, self.output_path, self.exiftool_path) if x is None]:
+                # Todo: Make sure paths are correct
+                pass
+            else:
+                print("input, output and exiftool paths cannot be null when in create mode!")
+        else:
+            if self.exec_file_path is not None:
+                # Todo: Make sure path is correct
+                pass
+            else:
+                print("exec file path cannot be null when in create mode!")
         return self

@@ -1,7 +1,6 @@
 import json
 
-from models.info_model import InfoModel
-from models.input_model import InputModel
+from models.input_model import InputModel, ManagingMode
 from utils.media_manager import MediaManager
 from utils.metadata_reader import MetadataReader
 
@@ -11,16 +10,22 @@ class Starter:
         self.input: InputModel = InputModel(**kwargs)
 
     def start(self):
-        info, corrupt = self.read_metadata()
-        self.manage_media(info)
-        print()
-        print()
-        print(f"corrupt: {json.dumps(corrupt, indent=4)}")
+        success_read, error_read = MetadataReader(self.input.exiftool_path).read_metadata_directory(self.input.input_path)
 
-    def read_metadata(self) -> tuple[list[InfoModel], list[dict]]:
-        return MetadataReader(self.input.exiftool_path).read_metadata_directory(self.input.input_path)
+        if self.input.mode == ManagingMode.CREATE:
+            path_mapping_dict: dict = MediaManager(success_read, self.input.output_path, self.input.mode.value).generate_management_dict()
 
-    def manage_media(self, info_list: list[InfoModel]) -> None:
-        manager = MediaManager(info_list, self.input.output_path, self.input.mode.value)
+            exec_dict: dict = {
+                "options": {
+                    "delete_empty_dir": False,
+                    "delete_error_files": False,
+                    "mode": "move"
+                },
+                "path_mapping": path_mapping_dict,
+                "errors": error_read
+            }
 
-        print(json.dumps(manager.manage_files(), indent=4))
+            with open(self.input.exec_file_path, 'w') as fp:
+                json.dump(exec_dict, fp, ensure_ascii=False, indent=4)
+        else:
+            pass
