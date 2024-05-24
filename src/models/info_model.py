@@ -14,7 +14,7 @@ class InfoModel(BaseModel):
 
     @staticmethod
     def from_exiftool_dict(exiftool_dict) -> "InfoModel":
-        str_date = exiftool_dict["Create Date"].split("+")[0]
+        str_date = exiftool_dict["CreateDate"].split("+")[0]
         try:
             og_date = datetime.datetime.strptime(str_date, "%Y:%m:%d %H:%M:%S.%f")
         except ValueError as e:
@@ -24,15 +24,15 @@ class InfoModel(BaseModel):
                 raise e
 
         try:
-            camera_model_name = f"{exiftool_dict['Make'].replace(' ', '-')}_{exiftool_dict['Camera Model Name'].replace(' ', '-')}"
+            camera_model_name = f"{exiftool_dict['Make'].replace(' ', '-')}_{exiftool_dict['Model'].replace(' ', '-')}"
         except KeyError:
             camera_model_name = "unknown"
 
         return InfoModel(
-            filename=exiftool_dict["File Name"],
-            file_extension=exiftool_dict["File Type Extension"],
-            abs_path=os.path.join(exiftool_dict["Directory"], exiftool_dict["File Name"]),
-            file_type=exiftool_dict["MIME Type"].split("/")[0],
+            filename=exiftool_dict["FileName"],
+            file_extension=exiftool_dict["FileTypeExtension"],
+            abs_path=os.path.join(exiftool_dict["Directory"], exiftool_dict["FileName"]),
+            file_type=exiftool_dict["MIMEType"].split("/")[0],
             camera_model_name=camera_model_name,
             og_date=og_date,
         )

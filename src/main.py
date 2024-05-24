@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-m", "--mode", default="create")
 
-parser.add_argument("exiftool_path", nargs='?')
+parser.add_argument("-t", "--exiftool-path", required=False)
 parser.add_argument("input_path", nargs='?')
 parser.add_argument("output_path", nargs='?')
 

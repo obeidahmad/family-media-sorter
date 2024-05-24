@@ -1,3 +1,4 @@
 pydantic~=2.7.0
 flatten-dict~=0.4.2
 tqdm~=4.66.4
+PyExifTool~=0.5.6
