@@ -1,3 +1,7 @@
+<a name="readme-top"></a>
+
+
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -25,11 +29,11 @@
 
 [//]: # (    ·)
 
-[//]: # (    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>)
+[//]: # (    <a href="https://github.com/obeidahmad/family-media-sorter/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>)
 
 [//]: # (    ·)
 
-[//]: # (    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>)
+[//]: # (    <a href="https://github.com/obeidahmad/family-media-sorter/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>)
   </p>
 </div>
 
@@ -144,6 +148,8 @@ If you need to see all available options use:
 app -h
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 ## Roadmap
@@ -196,6 +202,7 @@ Use this space to list resources you find helpful and would like to give credit 
 
 * [ExifTool](https://github.com/exiftool/exiftool)
 * [PyExifTool](https://github.com/sylikc/pyexiftool)
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
