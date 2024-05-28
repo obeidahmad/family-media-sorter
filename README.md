@@ -209,7 +209,6 @@ The amazing resources and library that made this project possible:
 
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/obeidahmad/family-media-sorter.svg?style=for-the-badge
 [contributors-url]: https://github.com/obeidahmad/family-media-sorter/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/obeidahmad/family-media-sorter.svg?style=for-the-badge
