@@ -198,7 +198,7 @@ Project Link: [https://github.com/obeidahmad/family-media-sorter](https://github
 
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+The amazing resources and library that made this project possible:
 
 * [ExifTool](https://github.com/exiftool/exiftool)
 * [PyExifTool](https://github.com/sylikc/pyexiftool)
