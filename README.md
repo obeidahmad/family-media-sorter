@@ -184,7 +184,7 @@ Distributed under the Apache-2.0 License. See `LICENSE.txt` for more information
 
 ## Contact
 
-Ahmad Obeid - obeid.ahmad2001@outlook.com
+[Ahmad Obeid][linkedin-url] - [obeid.ahmad2001@outlook.com](mailto:obeid.ahmad2001@outlook.com)
 
 Project Link: [https://github.com/obeidahmad/family-media-sorter](https://github.com/obeidahmad/family-media-sorter)
 
